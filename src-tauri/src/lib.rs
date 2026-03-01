@@ -1,5 +1,4 @@
 mod config;
-mod grpc_client;
 
 pub mod commands {
     use crate::config::LoadedConfig;
@@ -11,9 +10,8 @@ pub mod commands {
     }
 }
 
-use config::load_config;
 use crate::commands::get_config;
-use crate::grpc_client::{GrpcState, connect_grpc, fetch_orbitals, subscribe_aircraft};
+use config::load_config;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -21,9 +19,8 @@ pub fn run() {
 
     tauri::Builder::default()
         .manage(app_config)
-        .manage(GrpcState::new())
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![get_config, connect_grpc, fetch_orbitals, subscribe_aircraft])
+        .invoke_handler(tauri::generate_handler![get_config])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

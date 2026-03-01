@@ -15,11 +15,7 @@ name = "viper_client_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
-pbjson-types = "0.9.0"
 tauri-build = { version = "2", features = [] }
-tonic-build = "0.14.5"
-tonic-prost-build = "0.14.5"
-pbjson-build = "0.9.0"
 
 [dependencies]
 tauri = { version = "2", features = [] }
@@ -30,11 +26,5 @@ anyhow = "1.0.102"
 strum = "0.28.0"
 strum_macros = "0.28.0"
 toml = "0.9.12+spec-1.1.0"
-tonic = "0.14.5"
-prost = "0.14.3"
-prost-types = "0.14.3"
 tokio = { version = "1.49.0", features = ["full"] }
-tonic-prost = "0.14.5"
-pbjson = "0.9.0"
-pbjson-types = "0.9.0"
 

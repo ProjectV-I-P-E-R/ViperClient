@@ -4,7 +4,7 @@ build_version = "build_v1.0"
 google_maps = "AIz###"
 
 [development]
-backend_url = "http://localhost:8080"
+backend_url = "localhost:50051"
 
 [production]
 backend_url = "https://api.production.com"
