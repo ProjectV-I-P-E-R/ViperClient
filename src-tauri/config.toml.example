@@ -1,0 +1,10 @@
+build_version = "build_v1.0"
+
+[api_keys]
+google_maps = "AIz###"
+
+[development]
+backend_url = "http://localhost:8080"
+
+[production]
+backend_url = "https://api.production.com"
