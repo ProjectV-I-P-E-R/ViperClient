@@ -10,9 +10,7 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@bufbuild/protobuf": "^2.11.0",
-    "@connectrpc/connect": "^2.1.1",
-    "@connectrpc/connect-web": "^2.1.1",
+    "@msgpack/msgpack": "^3.1.3",
     "@tailwindcss/vite": "^4.2.1",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-opener": "^2",
@@ -34,7 +32,6 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@tailwindcss/oxide-darwin-arm64": "^4.2.1",
     "@tauri-apps/cli": "^2",
     "@types/node": "^25.3.2",
     "@types/react": "^19.1.8",
@@ -45,13 +42,8 @@
     "vite-plugin-cesium": "^1.2.23",
     "vite-plugin-node-polyfills": "^0.25.0"
   },
-  "optionalDependencies": {
-    "@rollup/rollup-darwin-arm64": "^4.59.0",
-    "lightningcss-darwin-arm64": "^1.31.1"
-  },
   "trustedDependencies": [
     "esbuild",
-    "msw",
-    "protobufjs"
+    "msw"
   ]
 }
