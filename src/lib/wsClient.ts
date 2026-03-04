@@ -6,7 +6,6 @@ export interface TrackedObject {
   lon: number;
   altitude: number;
   callsign?: string;
-  // Add other fields as necessary based on your server payload
 }
 
 export type SnapshotMessage = {
@@ -17,7 +16,7 @@ export type SnapshotMessage = {
 export type DeltaMessage = {
   type: "delta";
   updated: TrackedObject[];
-  removed: string[]; // IDs of removed objects
+  removed: string[];
 };
 
 export type ServerMessage = SnapshotMessage | DeltaMessage;
@@ -26,7 +25,7 @@ type MessageHandler = (msg: ServerMessage) => void;
 
 export class WsClient {
   private ws: WebSocket | null = null;
-  private url: string;
+  private readonly url: string;
   private handlers: Set<MessageHandler> = new Set();
   private reconnectTimer: number | null = null;
   private intentionalDisconnect: boolean = false;
@@ -42,7 +41,7 @@ export class WsClient {
 
     this.intentionalDisconnect = false;
     this.ws = new WebSocket(this.url);
-    this.ws.binaryType = "arraybuffer"; // Support binary payloads like MessagePack
+    this.ws.binaryType = "arraybuffer";
 
     this.ws.onopen = () => {
       console.log("[WsClient] Connected to", this.url);
@@ -70,7 +69,6 @@ export class WsClient {
         const view = new Uint8Array(buffer);
         if (view.length === 0) return;
 
-        // Check if it looks like JSON text (starts with '{' or '[')
         if (view[0] === 123 || view[0] === 91) {
             const text = new TextDecoder().decode(view);
             const payload = JSON.parse(text);
@@ -78,7 +76,6 @@ export class WsClient {
             return;
         }
 
-        // Fallback to MessagePack
         const generator = decodeMulti(buffer);
         for (const item of generator) {
             this.handlers.forEach(handler => handler(item as ServerMessage));
@@ -100,7 +97,6 @@ export class WsClient {
 
     this.ws.onerror = (err) => {
       console.error("[WsClient] WebSocket error:", err);
-      // Let onclose handle the reconnect
     };
   }
 
