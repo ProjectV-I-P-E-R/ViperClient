@@ -19,6 +19,12 @@ dev:
         exec cargo tauri dev
     fi
 
+[group("Dev")]
+clean:
+    #!/usr/bin/env sh
+    rm -rf ./dist
+    rm -rf ./src-tauri/target
+
 # Add a new shadcn component to the project
 [group("Utils")]
 add component_name:
