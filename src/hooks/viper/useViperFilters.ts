@@ -12,6 +12,7 @@ export interface ViperFilters {
     debris: boolean;
     signalNodes: boolean;
     thermalAnomalies: boolean;
+    gpsInterference: boolean;
     showOrbitPaths: boolean;
 }
 
@@ -27,6 +28,7 @@ export const DEFAULT_FILTERS: ViperFilters = {
     debris: false,
     signalNodes: false,
     thermalAnomalies: false,
+    gpsInterference: false,
     showOrbitPaths: false,
 };
 

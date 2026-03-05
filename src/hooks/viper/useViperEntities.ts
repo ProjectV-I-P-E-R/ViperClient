@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SyncEngine } from "@/engine/SyncEngine";
 import { NetworkLayer } from "@/engine/NetworkLayer";
+import { InterferenceEngine } from "@/engine/InterferenceEngine";
 import { ViperFilters } from "@/hooks/viper/useViperFilters.ts";
 
 interface UseViperEntitiesProps {
@@ -11,9 +12,10 @@ interface UseViperEntitiesProps {
 export function useViperEntities({ viewerRef, filters }: UseViperEntitiesProps) {
     const syncEngineRef = useRef<SyncEngine | null>(null);
     const networkLayerRef = useRef<NetworkLayer | null>(null);
+    const interferenceEngineRef = useRef<InterferenceEngine | null>(null);
+    const [interferenceLoading, setInterferenceLoading] = useState(false);
 
     useEffect(() => {
-        // Polling because useRef changes don't trigger re-renders
         const checkReady = setInterval(() => {
             const viewer = viewerRef.current?.cesiumElement;
             if (viewer && !syncEngineRef.current) {
@@ -23,7 +25,11 @@ export function useViperEntities({ viewerRef, filters }: UseViperEntitiesProps) 
                 syncEngineRef.current.start();
                 syncEngineRef.current.updateFilters(filters);
 
-                // REST server is on 3000, WS is on 50051
+                interferenceEngineRef.current = new InterferenceEngine(viewer);
+                interferenceEngineRef.current.onLoadingChange = setInterferenceLoading;
+                interferenceEngineRef.current.start();
+                interferenceEngineRef.current.setEnabled(filters.gpsInterference);
+
                 const snapshotUrl = `http://${window.location.hostname}:3000/snapshot`;
                 const wsUrl = `ws://${window.location.hostname}:50051`;
                 
@@ -40,17 +46,27 @@ export function useViperEntities({ viewerRef, filters }: UseViperEntitiesProps) 
                 syncEngineRef.current.stop();
                 syncEngineRef.current = null;
             }
+            if (interferenceEngineRef.current) {
+                interferenceEngineRef.current.stop();
+                interferenceEngineRef.current = null;
+            }
             if (networkLayerRef.current) {
                 networkLayerRef.current.disconnect();
                 networkLayerRef.current = null;
             }
         };
-    }, []); // Only run once on mount
+    }, []);
 
-    // React to filter changes
     useEffect(() => {
         if (syncEngineRef.current) {
             syncEngineRef.current.updateFilters(filters);
         }
+        if (interferenceEngineRef.current) {
+            interferenceEngineRef.current.setEnabled(filters.gpsInterference);
+        }
     }, [filters]);
+
+    return {
+        interferenceLoading
+    };
 }
