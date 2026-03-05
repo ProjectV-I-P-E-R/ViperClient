@@ -47,6 +47,11 @@ export function Reticle() {
                         <div>ALT: {Math.round(targetData.altitude)} {targetData.entity_type === "Aircraft" ? "FT" : "M"}</div>
                         <div>SPD: {Math.round(targetData.velocity)} KTS</div>
                         <div>HDG: {Math.round(targetData.heading)}°</div>
+                        {targetData.tags?.gps_interference && (
+                            <div className="mt-1 border-t border-green-500/20 pt-1 text-yellow-400">
+                                GPS INT: {targetData.tags.gps_interference}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

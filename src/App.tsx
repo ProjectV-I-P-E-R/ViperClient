@@ -18,7 +18,7 @@ function App() {
     const [dayNightCycle, setDayNightCycle] = useState(false);
     
     const { filters, updateFilter } = useViperFilters();
-    useViperEntities({ viewerRef, filters });
+    const { interferenceLoading } = useViperEntities({ viewerRef, filters });
 
     const nightShader = useMemo(
         () =>
@@ -76,6 +76,11 @@ function App() {
                     <OptionsMenu.Switch label="VESSELS" value={filters.vessels} onChange={(v) => updateFilter("vessels", v)} />
                     <OptionsMenu.Switch label="SIGNAL NODES" value={filters.signalNodes} onChange={(v) => updateFilter("signalNodes", v)} />
                     <OptionsMenu.Switch label="THERMAL ANOMALIES" value={filters.thermalAnomalies} onChange={(v) => updateFilter("thermalAnomalies", v)} />
+                    <OptionsMenu.Switch 
+                        label={interferenceLoading ? "GPS INTERFERENCE (CALC...)" : "GPS INTERFERENCE"} 
+                        value={filters.gpsInterference} 
+                        onChange={(v) => updateFilter("gpsInterference", v)} 
+                    />
                 </OptionsMenu.Section>
 
                 <OptionsMenu.Section label="DISPLAY">
